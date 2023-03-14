@@ -1,9 +1,9 @@
 #include <iostream>
-#include <algorithm>
 #include <queue>
+#include <algorithm>
 
 struct A {
-    int l,r;
+    int l, r;
     bool operator < (const A&o) const {
         if (l != o.l) {
             return l < o.l;
@@ -11,62 +11,64 @@ struct A {
         return r < o.r;
     }
 };
-A a[100100];
 std::queue<A> res;
+A arrey[100100];
 
-int main() {
+
+int main(){
     std::ios::sync_with_stdio(false);
     std::cin.tie(NULL);
-    int j, q, m, ll, rr, Mx;
+
+    int i, j, q, count, now, m, ll, rr, mx;
     std::cin >> q;
     while(q--) {
-        int cou = 0, now = 0;
+        count = 0; 
+        now = 0;
         std::cin >> m;
         while(1) {
-            std::cin >> a[cou].l >> a[cou].r;
-            if (a[cou].r==0 && a[cou].l==0) {
+            std::cin >> arrey[count].l >> arrey[count].r;
+            if (arrey[count].l == 0 && arrey[count].r == 0) {
                 break;
             }
-            if (a[cou].r < 0) {
+            if (arrey[count].r < 0) {
                 continue;
             }
-            cou++;
+            count++;
         }
-        std::sort(a, a+cou);
-        for (int i = 0; i < cou;) {
+        std::sort(arrey, arrey+count);
+        for (i = 0; i < count;) {
             if (now >= m) {
                 break;
             }
-            Mx = -1;
-            for (j = i; j < cou; j++) {
-                if (a[j].l > now) {
+            mx = -1;
+            for (j = i; j < count; j++) {
+                if (arrey[j].l > now) {
                     break;
-                }
-                if (a[j].r > Mx) {
-                    ll = a[j].l;
-                    rr = a[j].r;
-                    Mx = a[j].r;
+                } 
+                if (arrey[j].r > mx) {
+                    mx = arrey[j].r;
+                    ll = arrey[j].l;
+                    rr = arrey[j].r;
                 }
             }
-            if (Mx == -1) {
+            if (mx == -1) {
                 std::cout << "0\n";
-                goto Next;
+                goto pass;
             }
-            now = Mx;
+            now = mx;
             res.push({ll, rr});
             i = j;
         }
         if (now < m) {
             std::cout << "0\n";
-            goto Next;
+            goto pass;
         }
         std::cout << res.size() << "\n";
-        
         while(!res.empty()) {
             std::cout << res.front().l << " " << res.front().r << "\n";
             res.pop();
         }
-        Next:;
+        pass:;
         while(!res.empty()) {
             res.pop();
         }
